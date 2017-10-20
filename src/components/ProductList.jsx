@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Glyphicon } from 'react-bootstrap';
+import store from '../store';
 
 const styles = {
   products: {
@@ -46,8 +47,14 @@ class ProductList extends Component {
     );
   }
 
+  // se despacha la acción
+  // cuando esto se llama, redux llama a la función reductora
+  // le pasa el estado y la acción que acabamos de crear
   addToCart(product) {
-
+    store.dispatch({
+      type: 'ADD_TO_CART',
+      product
+    })
   }
 }
 
