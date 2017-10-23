@@ -9,6 +9,7 @@ import store from './store';
 import './index.css';
 
 ReactDOM.render(
+    // el Provider, PROVEE a los componentes del store
     <Provider store={store}>
         <App/> 
     </Provider>,

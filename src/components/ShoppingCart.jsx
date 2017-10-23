@@ -35,15 +35,24 @@ const ShoppingCart = (props) => {
   )
 }
 
+// se encarga de retornar un objeto
+// ese objeto lo pasamos como props a nuestro componente
 const mapStateToProps = (state) => {
   return {
-    cart: state.cart
+    // cart -> que está en el estado compartido de redux
+    // no necesitamos el constructor con this.state = { cart: [] }
+    // se cambia "state" por "props"
+    cart: state.cart 
   }
 }
 
+// recibe el dispatch del store
+// retorna el objeto como props
 const mapDispatchToProps = (dispatch) => {
   return { 
+    // función del botón 
     removeFromCart(product){
+      // "store.dispatch" ya no, sino "dispatch"
       dispatch(removeFromCart(product));
     }
   }

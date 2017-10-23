@@ -1,4 +1,4 @@
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 
 // función reductora
 const reducer = (state, action) => {
@@ -17,7 +17,17 @@ const reducer = (state, action) => {
     return state;
 }
 
+// Middleware
+// http://redux.js.org/docs/advanced/Middleware.html
+const logger = store => next => action => {
+  console.log('dispatching', action); // cada que haya un dispatch 
+  let result = next(action); // para que termine llamando al reducer
+  console.log('next state', store.getState()); // nos muestra el estado como quedó
+  return result;
+}
+
 // para crear el estado se necesita: 
 // 1. la función reductora
 // 2. el estado inicial
-export default createStore(reducer, { cart: [] });
+// Opcional -> Middleware
+export default createStore(reducer, { cart: [] }, applyMiddleware(logger));
