@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Button, Glyphicon } from 'react-bootstrap';
+import { connect } from 'react-redux';
 
-import store from '../store';
 import { addToCart } from '../actionCreators';
 
 const styles = {
@@ -17,44 +17,48 @@ const styles = {
   }
 };
 
-class ProductList extends Component {
-  constructor() {
-    super();
-    this.addToCart = this.addToCart.bind(this);
-
-    this.state = {
-      products: [
-        { id: 1, name: "Hipster Ultimate", price: 299, image: "https://s3.amazonaws.com/makeitreal/projects/e-commerce/camiseta-1.jpg" },
-        { id: 2, name: "On Motion Live", price: 99, image: "https://s3.amazonaws.com/makeitreal/projects/e-commerce/camiseta-2.jpg" },
-        { id: 3, name: "Underground Max", price: 149, image: "https://s3.amazonaws.com/makeitreal/projects/e-commerce/camiseta-3.jpg" },
-      ]
-    }
-  }
-
-  render() {
+// puede ser { props } o directamente { products, addToCart}
+const ProductList = ({ products, addToCart }) => {
     return (
       <div style={styles.products}>
-        {this.state.products.map(product =>
+        {products.map(product =>
           <div className="thumbnail" style={styles.product} key={product.id}>
             <img src={product.image} alt={product.name} />
             <div className="caption">
               <h4>{product.name}</h4>
               <p>
-                <Button bsStyle="primary" onClick={() => this.addToCart(product)} role="button" disabled={product.inventory <= 0}>${product.price} <Glyphicon glyph="shopping-cart" /></Button>
+                <Button 
+                  bsStyle="primary" 
+                  onClick={() => addToCart(product)} 
+                  role="button" 
+                  disabled={product.inventory <= 0}
+                >
+                  ${product.price} 
+                  <Glyphicon glyph="shopping-cart" />
+                </Button>
               </p>
             </div>
           </div>
         )}
       </div>
     );
-  }
+}
 
-  // se despacha la acción
-  // cuando esto se llama, redux llama a la función reductora
-  // le pasa el estado y la acción que acabamos de crear
-  addToCart(product) {
-    store.dispatch(addToCart(product));
+const mapStateToProps = state => {
+  return {
+    products: state.products
   }
 }
 
-export default ProductList;
+// se despacha la acción
+// cuando esto se llama, redux llama a la función reductora
+// le pasa el estado y la acción que acabamos de crear
+const mapDispatchToProps = dispatch => {
+  return {
+    addToCart(product){
+      dispatch(addToCart(product));
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProductList);
