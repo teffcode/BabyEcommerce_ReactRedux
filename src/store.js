@@ -1,4 +1,5 @@
 import { createStore, applyMiddleware } from 'redux';
+import { thunk } from 'redux-thunk'; // middleware
 
 // función reductora
 const reducer = (state, action) => {
@@ -36,4 +37,4 @@ const logger = store => next => action => {
 // 1. la función reductora
 // 2. el estado inicial
 // Opcional -> Middleware
-export default createStore(reducer, { cart: [], products: [] }, applyMiddleware(logger));
+export default createStore(reducer, { cart: [], products: [] }, applyMiddleware(logger, thunk));
